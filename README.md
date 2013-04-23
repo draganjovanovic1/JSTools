@@ -1,4 +1,4 @@
 JSTools
 =======
 
-Repository for js libraries.
+Repository for js serbian libraries.
