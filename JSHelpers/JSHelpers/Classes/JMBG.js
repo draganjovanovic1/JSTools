@@ -1,36 +1,35 @@
 ﻿/// <reference path="dataValidator.js" />
-var JMBG = (function () {
+var JMBG = function (jmbg) {
     "use strict";
-    var _jmbg, _region, _validan, _dan, _mesec, _godina, _rbr, _kontrolni;
-    function JMBG(jmbg) {
-        if (dataValidator.prototype.validanJMBG(jmbg)) {
-            _jmbg = jmbg;
-            _validan = true;
-            new Parse();
-        }
+    var _jmbg, _region, _dan, _mesec, _godina, _rbr, _kontrolni;
+    var _validan = dataValidator.prototype.validanJMBG(jmbg);
+
+    if (_validan) {
+        _jmbg = jmbg;
+        Parse();
     }
-    JMBG.prototype.pol = function () {
-        if (_validan)
-            return _rbr > 500 ? "Z" : "M";
+    this.pol = function () {
+        if (_validan) return _rbr > 500 ? "Z" : "M";
         return null;
     };
-    JMBG.prototype.region = function () {
+    this.region = function () {
         for (var i = 0; i < 100; i++)
             if (regioni[i][0] === _region)
                 return regioni[i][1];
+        return null;
     };
-    JMBG.prototype.redniBrojRodjenja = function () {
+    this.redniBrojRodjenja = function () {
         if (_validan) return _rbr > 499 ? _rbr - 499 : _rbr + 1;
-        else return _rbr;
+        else return null;
     };
-    JMBG.prototype.validan = function () {
+    this.validan = function () {
         return _validan;
     };
-    JMBG.prototype.datumRodjenja = function () {
-        return new Date(_godina, _mesec, _dan);
+    this.datumRodjenja = function () {
+        return _validan ? new Date(_godina, _mesec, _dan) : null;
     };
-    JMBG.prototype.toString = function () {
-        return _jmbg;
+    this.toString = function () {
+        return _validan ? _jmbg : null;
     };
     function Parse() {
         _dan = parseInt(_jmbg.substring(0, 2), 10);
@@ -169,5 +168,4 @@ var JMBG = (function () {
             ["98", "Kosovo i Metohija"],
             ["99", "Kosovo i Metohija"]
     ];
-    return JMBG;
-})();
+};

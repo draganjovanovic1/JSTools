@@ -18,10 +18,10 @@
         return rez;
     };
     function convert(slovo, recnik) {
-        if (slovo === " ") return slovo;
         for (var i = 0; i < recnik.length; i++)
             if (recnik[i][0] === slovo)
                 return recnik[i][1];
+        return slovo;
     }
     var _cir2lat = [
         ["а", "a"], ["б", "b"], ["в", "v"], ["г", "g"], ["д", "d"], ["ђ", "đ"], ["е", "e"], ["ж", "ž"], ["з", "z"], ["и", "i"],

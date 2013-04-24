@@ -51,7 +51,8 @@
     };
     dataValidator.prototype.validanJMBG = function (jmbg) {
         var rez = false;
-        if (jmbg.length === 13 && this.validanBroj(jmbg)) {
+        if (jmbg !== undefined && jmbg !== null &&
+            jmbg.length === 13 && this.validanBroj(jmbg)) {
             var dan = jmbg.substring(0, 2);
             var mesec = jmbg.substring(2, 4);
             var godina = "2" + jmbg.substring(4, 7);
@@ -102,7 +103,7 @@
         }
         if (this.validanBroj(zakontrolu)) {
             var rez = mod97(zakontrolu);
-            return rez.length === 1 ? rez = "0" + rez : rez;
+            return rez.length === 1 ? rez = "0" + rez.toString() : rez.toString();
         }
         else return null;
     };
@@ -110,7 +111,7 @@
         if (broj === undefined || broj === null || broj === "") return null;
         if (this.validanBroj(broj)) {
             var rez = mod22(broj);
-            return rez;
+            return rez.toString();
         }
         else return null;
     };
@@ -126,7 +127,7 @@
     function mod97(br) {
         var c, kb = 0;
         var os = 100;
-        for (var x = br.length - 1; x === 0; x--) {
+        for (var x = br.length - 1; x >= 0; x--) {
             c = parseInt(br.charAt(x), 10);
             kb = (kb + (os * c)) % 97;
             os = (os * 10) % 97;
