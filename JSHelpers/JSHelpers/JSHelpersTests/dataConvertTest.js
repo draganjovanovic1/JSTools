@@ -1,4 +1,4 @@
-﻿/// <reference path="../external_js/qunit.js" />
+﻿/// <reference path="../references/js/qunit.js" />
 /// <reference path="../JSHelpers/dataConvert.js" />
 
 var cir = "Поново непрекидно дежурство по сменама. Био сам у кабини до 12.00 часова. По доласку у логор око 12.30 часова покушао сам да заспим. Само што сам утонуо у први сан, пробудио ме је...";

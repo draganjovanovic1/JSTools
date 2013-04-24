@@ -14,7 +14,7 @@
     };
     dataValidator.prototype.validanPIB = function (pib) {
         var rez = false;
-        if (pib.length === 9 && this.validanBroj(pib)) {
+        if (pib.length === 9 && dataValidator.prototype.validanBroj(pib)) {
             var suma = 10;
             for (var i = 0; i < 8; i++) {
                 suma = (suma + parseInt(pib.substring(i, i + 1), 10)) % 10;
@@ -30,7 +30,7 @@
     };
     dataValidator.prototype.validanMB = function (mb) {
         var rez = false;
-        if (mb.length === 8 && this.validanBroj(mb)) {
+        if (mb.length === 8 && dataValidator.prototype.validanBroj(mb)) {
             var suma = 0;
             for (var i = 0; i < 7; i++) {
                 if (i === 0 || i === 6) suma += parseInt(mb.substring(i, i + 1), 10) * 2;
@@ -52,11 +52,11 @@
     dataValidator.prototype.validanJMBG = function (jmbg) {
         var rez = false;
         if (jmbg !== undefined && jmbg !== null &&
-            jmbg.length === 13 && this.validanBroj(jmbg)) {
+            jmbg.length === 13 && dataValidator.prototype.validanBroj(jmbg)) {
             var dan = jmbg.substring(0, 2);
             var mesec = jmbg.substring(2, 4);
             var godina = "2" + jmbg.substring(4, 7);
-            if (!this.validanDatum(new Date(godina, mesec, dan))) rez = false;
+            if (!dataValidator.prototype.validanDatum(new Date(godina, mesec, dan))) rez = false;
             else {
                 if (jmbg.substring(7, 9) === "66" || jmbg.substring(7, 9) === "60") rez = true;
                 else {
@@ -90,8 +90,10 @@
         var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
         return regex.test(email);
     };
-    dataValidator.prototype.validanMod97 = function (broj, kontrolni) {
-        return this.kontrolniBrojMod97(broj) === kontrolni;
+    dataValidator.prototype.validanMod97 = function (broj) {
+        if (broj.length > 2)
+            return dataValidator.prototype.kontrolniBrojMod97(broj.substring(2)) === broj.substring(0, 2);
+        return false;
     };
     dataValidator.prototype.kontrolniBrojMod97 = function (broj) {
         if (broj === undefined || broj === null || broj === "") return null;
@@ -101,7 +103,7 @@
             if (vrednost === null) return null;
             else zakontrolu += vrednost.toString();
         }
-        if (this.validanBroj(zakontrolu)) {
+        if (dataValidator.prototype.validanBroj(zakontrolu)) {
             var rez = mod97(zakontrolu);
             return rez.length === 1 ? rez = "0" + rez.toString() : rez.toString();
         }
@@ -109,20 +111,26 @@
     };
     dataValidator.prototype.kontrolniBrojMod22 = function (broj) {
         if (broj === undefined || broj === null || broj === "") return null;
-        if (this.validanBroj(broj)) {
+        if (dataValidator.prototype.validanBroj(broj)) {
             var rez = mod22(broj);
             return rez.toString();
         }
         else return null;
     };
+    dataValidator.prototype.mod97ValidniZnakovi = function myfunction() {
+        var rez = new Array();
+        for (var i = 0; i < _slova_za_kontrolni_broj.length; i++)
+            rez.push(_slova_za_kontrolni_broj[i][0]);
+        return rez;
+    };
     function slovoUBroj(slovo) {
-        var rez = null;
         for (var i = 0; i < _slova_za_kontrolni_broj.length; i++)
             if (_slova_za_kontrolni_broj[i][0] === slovo) {
-                rez = _slova_za_kontrolni_broj[i][1];
+                return _slova_za_kontrolni_broj[i][1];
                 break;
             }
-        return rez;
+        if (slovo === "-") return "";
+        else return null;
     }
     function mod97(br) {
         var c, kb = 0;

@@ -13,6 +13,20 @@
         var rez = "";
         for (var i = 0; i < zapromenu.length; i++) {
             var slovo = zapromenu.substring(i, i + 1);
+            if (slovo == "l" || slovo == "n" || slovo == "d" ||
+                slovo == "L" || slovo == "N" || slovo == "D") {
+                var sledece = zapromenu.substring(i + 1, i + 2);
+                if (sledece !== undefined && sledece !== null)
+                    if ((slovo === "l" && sledece === "j") ||
+                        (slovo === "n" && sledece === "j") ||
+                        (slovo === "d" && sledece === "ž") ||
+                        (slovo === "L" && (sledece === "j" || sledece === "J")) ||
+                        (slovo === "N" && (sledece === "j" || sledece === "J")) ||
+                        (slovo === "D" && (sledece === "ž" || sledece === "Ž"))) {
+                        slovo += sledece;
+                        i++;
+                    }
+            }
             rez += convert(slovo, _lat2cir);
         }
         return rez;

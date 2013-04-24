@@ -3,10 +3,11 @@
 <head>
     <meta charset="utf-8">
     <title>JSTools</title>
-    <link href="external_css/bootstrap.min.css" rel="stylesheet">
+    <link href="references/css/bootstrap.min.css" rel="stylesheet">
+    <link href="references/css/qunit.css" rel="stylesheet" />
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
-      <script src="external_js/html5shiv.js"></script>
+      <script src="references/js/html5shiv.js"></script>
     <![endif]-->
 </head>
 <body>
@@ -21,17 +22,26 @@
                 <a class="brand" href="/">JSTools</a>
                 <div class="nav-collapse collapse">
                     <ul class="nav">
-                        <li class="active"><a href="/">Home</a></li>
+                        <li><a href="/">Home</a></li>
                         <li><a href="demo.html">Demo</a></li>
-                        <li><a href="testovi.html">Unit testovi</a></li>
+                        <li class="active"><a href="testovi.html">Unit testovi</a></li>
                     </ul>
                 </div>
             </div>
         </div>
     </div>
     <div class="container">
-        <h1>JSTools biblioteke</h1>
-        <p>Projekat sadrži nekoliko korisnih biblioteka za validaciju i konverziju podataka kao i za čitanje svih podataka sadržanih u JMBG (jedinstvenom matičnom broju građana).</p>
+        <h1>JSTools testovi klasa</h1>
+        <div id="qunit"></div>
+        <div id="qunit-fixture"></div>
+
+        <script src="references/js/qunit.js"></script>
+        <script src="JSHelpers/dataValidator.js"></script>
+        <script src="JSHelpers/JMBG.js"></script>
+        <script src="JSHelpers/dataConvert.js"></script>
+        <script src="JSHelpersTests/dataValidatorTest.js"></script>
+        <script src="JSHelpersTests/JMBGTest.js"></script>
+        <script src="JSHelpersTests/dataConvertTest.js"></script>
     </div>
 </body>
 </html>

@@ -1,4 +1,4 @@
-﻿/// <reference path="../external_js/qunit.js" />
+﻿/// <reference path="../references/js/qunit.js" />
 /// <reference path="../JSHelpers/dataValidator.js" />
 
 test("dataValidator.validanBroj", function () {

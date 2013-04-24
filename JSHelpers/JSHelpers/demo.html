@@ -1,0 +1,170 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>JSTools</title>
+    <link href="references/css/bootstrap.min.css" rel="stylesheet">
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="references/js/html5shiv.js"></script>
+    <![endif]-->
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="brand" href="/">JSTools</a>
+                <div class="nav-collapse collapse">
+                    <ul class="nav">
+                        <li><a href="/">Home</a></li>
+                        <li class="active"><a href="demo.html">Demo</a></li>
+                        <li><a href="testovi.html">Unit testovi</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <h1>Demo</h1>
+        <fieldset id="JMBG_demo">
+            <legend>JMBG demo</legend>
+            <div class="input-prepend input-append">
+                <span class="add-on">Unesite JMBG:</span>
+                <input class="span2" id="txtJMBG" type="text" value="0101900770007" placeholder="JMBG...">
+                <button class="btn" type="button" id="btnJMBG">Čitaj</button>
+            </div>
+            <pre id="jmbg_result">Rezultat...</pre>
+        </fieldset>
+        <fieldset id="dataConvert_demo">
+            <legend>dataConvert demo</legend>
+            <textarea name="lat" id="txtConvert" cols="30" rows="5" placeholder="Tekst..." style="width: 98%;"></textarea>
+            <p>
+                <input type="radio" name="tip" id="rbLat2Cir" value="lat2cir" checked="checked" />&nbsp;latinica u ćirilicu&nbsp;&nbsp;&nbsp;
+                <input type="radio" name="tip" id="rbCir2Lat" value="cir2lat" />&nbsp;ćirilica u latinicu
+            </p>
+            <pre id="convert_result">Rezultat...</pre>
+        </fieldset>
+        <fieldset id="dataValidator_demo">
+            <legend>dataValidator demo</legend>
+            <p>
+                <input type="radio" name="tip_validacije" id="rbPIB" value="PIB" checked="checked" />&nbsp;PIB&nbsp;&nbsp;&nbsp;
+                <input type="radio" name="tip_validacije" id="rbMB" value="MB" />&nbsp;MB firme&nbsp;&nbsp;&nbsp;
+                <input type="radio" name="tip_validacije" id="rbJBMG" value="JMBG" />&nbsp;JMBG&nbsp;&nbsp;&nbsp;
+                <input type="radio" name="tip_validacije" id="rbEmail" value="mail" />&nbsp;email&nbsp;&nbsp;&nbsp;
+                <input type="radio" name="tip_validacije" id="rbMod97" value="mod97" />&nbsp;kontrolni broj po modelu 97&nbsp;&nbsp;&nbsp;
+            </p>
+            <div class="input-prepend input-append">
+                <span class="add-on">Unesite vrednost:</span>
+                <input class="span2" id="txtValidator" type="text" value="100000049" placeholder="Unesite vrednost..." >
+                <button class="btn" type="button" id="btnValidiraj">Validiraj</button>
+            </div>
+            <pre id="validator_result">Rezultat...</pre>
+        </fieldset>
+    </div>
+
+    <script src="JSHelpers/dataConvert.js"></script>
+    <script src="JSHelpers/dataValidator.js"></script>
+    <script src="JSHelpers/JMBG.js"></script>
+    <script src="references/js/jquery-1.9.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#btnJMBG').click(function () {
+                var input = $('#txtJMBG').val();
+                var jmbg = new JMBG(input);
+                $('#jmbg_result').html('');
+                $('#jmbg_result').append('Validan: ' + jmbg.validan());
+                $('#jmbg_result').append('<br />Datum rođenja: ' + jmbg.datumRodjenja());
+                $('#jmbg_result').append('<br />Region rođenja: ' + jmbg.region());
+                $('#jmbg_result').append('<br />Pol: ' + jmbg.pol());
+                $('#jmbg_result').append('<br />Redni broj rođenja (u regionu u danu): ' + jmbg.redniBrojRodjenja());
+
+            });
+            $('#txtConvert').keyup(function (e) {
+                var input = $('#txtConvert').val();
+                if (input !== "") {
+                    var funkcija = dataConvert.prototype.lat2Cir;
+                    if ($("input[name='tip']:checked").val() === 'cir2lat')
+                        funkcija = dataConvert.prototype.cir2Lat;
+                    $('#convert_result').html(funkcija(input));
+                }
+                else $('#convert_result').html("Rezultat...");
+            });
+            $("input[name='tip']").change(function () {
+                $('#convert_result').html('Rezultat...');
+            });
+            $('#btnValidiraj').click(function () {
+                var input = $('#txtValidator').val();
+                var funkcija;
+                switch ($("input[name='tip_validacije']:checked").val()) {
+                    case "PIB":
+                        funkcija = dataValidator.prototype.validanPIB;
+                        break;
+                    case "MB":
+                        funkcija = dataValidator.prototype.validanMB;
+                        break;
+                    case "JMBG":
+                        funkcija = dataValidator.prototype.validanJMBG;
+                        break;
+                    case "mail":
+                        funkcija = dataValidator.prototype.validanEmail;
+                        break;
+                    case "mod97":
+                        //var broj = "";
+                        //for (var i = 0; i < input.length; i++) {
+                        //    var validno = false;
+                        //    var slovo = input.charAt(i);
+                        //    var validnaslova = dataValidator.prototype.mod97ValidniZnakovi();
+                        //    for (var j = 0; j < validnaslova.length; j++)
+                        //        if (slovo === validnaslova[j]) {
+                        //            broj += slovo;
+                        //            validno = true;
+                        //            break;
+                        //        }
+                        //    if (!validno && slovo != "-") {
+                        //        $('#validator_result').html('Broj sadrži nevalidan znak: ' + slovo);
+                        //        return;
+                        //    }
+                        //}
+                        //$('#validator_result').html('Validan: ' + dataValidator.prototype.validanMod97(broj);
+                        //return;
+                        funkcija = dataValidator.prototype.validanMod97;
+                        break;
+                    default:
+                        break;
+                }
+                if (funkcija !== undefined) $('#validator_result').html('Validan: ' + funkcija(input));
+                else $('#validator_result').html("Rezultat...");
+            });
+            $("input[name='tip_validacije']").change(function () {
+                var text = "";
+                switch ($("input[name='tip_validacije']:checked").val()) {
+                    case "PIB":
+                        text = "100000049";
+                        break;
+                    case "MB":
+                        text = "17138669";
+                        break;
+                    case "JMBG":
+                        text = "0101900770007";
+                        break;
+                    case "mail":
+                        text = "neko@nesto.rs";
+                        break;
+                    case "mod97":
+                        text = "61-115-0000000000001";
+                        break;
+                    default:
+                        break;
+                }
+                $('#txtValidator').val(text);
+                $('#validator_result').html('Rezultat...');
+            });
+        });
+    </script>
+</body>
+</html>
