@@ -44,12 +44,11 @@ test("dataValidator.validanEmail", function () {
     strictEqual(dataValidator.prototype.validanEmail(invalid_email), false, "Neispravan email");
 });
 test("dataValidator.validanMod97", function () {
-    var broj = "1150000000000101";
-    var valid_kontrolni = "52";
-    var invalid_kontrolni = "46";
+    var valid_broj = "521150000000000101";
+    var invalid_broj = "461150000000000101";
 
-    strictEqual(dataValidator.prototype.validanMod97(broj, valid_kontrolni), true, "Ispravan kontrolni broj");
-    strictEqual(dataValidator.prototype.validanMod97(broj, invalid_kontrolni), false, "Neispravan kontrolni broj");
+    strictEqual(dataValidator.prototype.validanMod97(valid_broj), true, "Ispravan kontrolni broj");
+    strictEqual(dataValidator.prototype.validanMod97(invalid_broj), false, "Neispravan kontrolni broj");
 });
 test("dataValidator.kontrolniBrojMod97", function () {
     var broj = "1150000000000001";
