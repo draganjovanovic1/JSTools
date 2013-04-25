@@ -16,9 +16,8 @@
         var rez = "";
         for (var i = 0; i < zapromenu.length; i++) {
             var slovo = zapromenu.substring(i, i + 1);
-            
-            if (slovo === "l" || slovo === "n" || slovo === "d" ||
-                slovo === "L" || slovo === "N" || slovo === "D") {
+                        
+            if (/^l|L|n|N|d|D$/.test(slovo)) {
                 var sledece = zapromenu.substring(i + 1, i + 2);
                 if (sledece !== undefined && sledece !== null)
                     if ((slovo === "l" && sledece === "j") ||
