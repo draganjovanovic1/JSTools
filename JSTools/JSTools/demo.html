@@ -64,6 +64,7 @@
                 <button class="btn" type="button" id="btnValidiraj">Validiraj</button>
             </div>
             <pre id="validator_result">Rezultat...</pre>
+            <pre id="validator_errors">Greške...</pre>
         </fieldset>
     </div>
 
@@ -114,31 +115,20 @@
                         funkcija = dataValidator.prototype.validanEmail;
                         break;
                     case "mod97":
-                        //var broj = "";
-                        //for (var i = 0; i < input.length; i++) {
-                        //    var validno = false;
-                        //    var slovo = input.charAt(i);
-                        //    var validnaslova = dataValidator.prototype.mod97ValidniZnakovi();
-                        //    for (var j = 0; j < validnaslova.length; j++)
-                        //        if (slovo === validnaslova[j]) {
-                        //            broj += slovo;
-                        //            validno = true;
-                        //            break;
-                        //        }
-                        //    if (!validno && slovo != "-") {
-                        //        $('#validator_result').html('Broj sadrži nevalidan znak: ' + slovo);
-                        //        return;
-                        //    }
-                        //}
-                        //$('#validator_result').html('Validan: ' + dataValidator.prototype.validanMod97(broj);
-                        //return;
                         funkcija = dataValidator.prototype.validanMod97;
                         break;
                     default:
                         break;
                 }
-                if (funkcija !== undefined) $('#validator_result').html('Validan: ' + funkcija(input));
-                else $('#validator_result').html("Rezultat...");
+                if (funkcija !== undefined) $('#validator_result').html('Validan: ' + funkcija(input, function (err) {
+                    $('#validator_errors').html("");
+                    for (var i = 0; i < err.length; i++)
+                        $('#validator_errors').append(err[i] + "<br />");
+                }));
+                else {
+                    $('#validator_result').html("Rezultat...");
+                    $('#validator_errors').html("Greške...");
+                }
             });
             $("input[name='tip_validacije']").change(function () {
                 var text = "";

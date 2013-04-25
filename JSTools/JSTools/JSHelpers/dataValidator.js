@@ -90,10 +90,28 @@
         var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
         return regex.test(email);
     };
-    dataValidator.prototype.validanMod97 = function (broj) {
-        if (broj.length > 2)
-            return dataValidator.prototype.kontrolniBrojMod97(broj.substring(2)) === broj.substring(0, 2);
-        return false;
+    dataValidator.prototype.validanMod97 = function (broj, validation_error_callback) {
+        if (validation_error_callback !== undefined) {
+            var validation_errors = [];
+            if (broj.length <= 2) {
+                validation_errors.push("Nevalidna dužina broja");
+                return false;
+            }
+            for (var i = 0; i < broj.length; i++) {
+                var validno = false;
+                var slovo = broj.charAt(i);
+                for (var j = 0; j < _slova_za_kontrolni_broj.length; j++)
+                    if (slovo === _slova_za_kontrolni_broj[j][0]) {
+                        validno = true;
+                        break;
+                    }
+                if (!validno && slovo != "-") {
+                    validation_errors.push("Nevalidan znak: (" + slovo + ") na poziciji " + (i + 1).toString());
+                }
+            }
+            if (validation_errors.length !== 0) validation_error_callback(validation_errors);
+        }
+        return dataValidator.prototype.kontrolniBrojMod97(broj.substring(2)) === broj.substring(0, 2);
     };
     dataValidator.prototype.kontrolniBrojMod97 = function (broj) {
         if (broj === undefined || broj === null || broj === "") return null;
@@ -117,12 +135,15 @@
         }
         else return null;
     };
+<<<<<<< HEAD
     dataValidator.prototype.mod97ValidniZnakovi = function myfunction() {
         var rez = [];
         for (var i = 0; i < _slova_za_kontrolni_broj.length; i++)
             rez.push(_slova_za_kontrolni_broj[i][0]);
         return rez;
     };
+=======
+>>>>>>> Validation callback na validiranju broja po mod97
     function slovoUBroj(slovo) {
         for (var i = 0; i < _slova_za_kontrolni_broj.length; i++)
             if (_slova_za_kontrolni_broj[i][0] === slovo) {
@@ -156,10 +177,10 @@
         return kb;
     }
     var _slova_za_kontrolni_broj = [
-            ['0', 0], ['1', 1], ['2', 2], ['3', 3], ['4', 4], ['5', 5], ['6', 6], ['7', 7], ['8', 8], ['9', 9],
-            ['A', 10], ['B', 11], ['C', 12], ['D', 13], ['E', 14], ['F', 15], ['G', 16], ['H', 17], ['I', 18], ['J', 19],
-            ['K', 20], ['L', 21], ['M', 22], ['N', 23], ['O', 24], ['P', 25], ['Q', 26], ['R', 27], ['S', 28], ['T', 29],
-            ['U', 30], ['V', 31], ['W', 32], ['X', 33], ['Y', 34], ['Z', 35]
+            ["0", 0], ["1", 1], ["2", 2], ["3", 3], ["4", 4], ["5", 5], ["6", 6], ["7", 7], ["8", 8], ["9", 9],
+            ["A", 10], ["B", 11], ["C", 12], ["D", 13], ["E", 14], ["F", 15], ["G", 16], ["H", 17], ["I", 18], ["J", 19],
+            ["K", 20], ["L", 21], ["M", 22], ["N", 23], ["O", 24], ["P", 25], ["Q", 26], ["R", 27], ["S", 28], ["T", 29],
+            ["U", 30], ["V", 31], ["W", 32], ["X", 33], ["Y", 34], ["Z", 35]
     ];
     return dataValidator;
 })();
