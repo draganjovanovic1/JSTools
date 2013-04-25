@@ -63,11 +63,17 @@
     <Content Include="JSHelpersTests\dataValidatorTest.js" />
     <Content Include="JSHelpersTests\JMBGTest.js" />
     <Content Include="JSHelpers\dataConvert.js" />
-    <Content Include="JSHelpers\dataConvert.min.js" />
+    <Content Include="JSHelpers\dataConvert.min.js">
+      <DependentUpon>dataConvert.js</DependentUpon>
+    </Content>
     <Content Include="JSHelpers\dataValidator.js" />
-    <Content Include="JSHelpers\dataValidator.min.js" />
+    <Content Include="JSHelpers\dataValidator.min.js">
+      <DependentUpon>dataValidator.js</DependentUpon>
+    </Content>
     <Content Include="JSHelpers\JMBG.js" />
-    <Content Include="JSHelpers\JMBG.min.js" />
+    <Content Include="JSHelpers\JMBG.min.js">
+      <DependentUpon>JMBG.js</DependentUpon>
+    </Content>
     <Content Include="references\css\bootstrap-responsive.css" />
     <Content Include="references\css\bootstrap-responsive.min.css" />
     <Content Include="references\css\bootstrap.css" />
@@ -87,9 +93,15 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="JSHelpers\dataConvert.min.js.map" />
-    <Content Include="JSHelpers\dataValidator.min.js.map" />
-    <Content Include="JSHelpers\JMBG.min.js.map" />
+    <Content Include="JSHelpers\dataConvert.min.js.map">
+      <DependentUpon>dataConvert.js</DependentUpon>
+    </Content>
+    <Content Include="JSHelpers\dataValidator.min.js.map">
+      <DependentUpon>dataValidator.js</DependentUpon>
+    </Content>
+    <Content Include="JSHelpers\JMBG.min.js.map">
+      <DependentUpon>JMBG.js</DependentUpon>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

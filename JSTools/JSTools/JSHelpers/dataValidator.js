@@ -118,7 +118,7 @@
         else return null;
     };
     dataValidator.prototype.mod97ValidniZnakovi = function myfunction() {
-        var rez = new Array();
+        var rez = [];
         for (var i = 0; i < _slova_za_kontrolni_broj.length; i++)
             rez.push(_slova_za_kontrolni_broj[i][0]);
         return rez;
