@@ -6,7 +6,7 @@
     dataConvert.prototype.cir2Lat = function (zapromenu) {
         var rez = "";        
         for (var i = 0; i < zapromenu.length; i++) {
-            var slovo = zapromenu.substring(i, i + 1);
+            var slovo = zapromenu.charAt(i);
             rez += convert(slovo, _cir2lat);
         }
         return rez;
@@ -15,11 +15,10 @@
     dataConvert.prototype.lat2Cir = function (zapromenu) {
         var rez = "";
         for (var i = 0; i < zapromenu.length; i++) {
-            var slovo = zapromenu.substring(i, i + 1);
-                        
+            var slovo = zapromenu.charAt(i);
             if (/^l|L|n|N|d|D$/.test(slovo)) {
-                var sledece = zapromenu.substring(i + 1, i + 2);
-                if (sledece !== undefined && sledece !== null)
+                var sledece = zapromenu.charAt(i + 1);
+                if (typeof sledece === "undefined" && sledece !== null)
                     if ((slovo === "l" && sledece === "j") ||
                         (slovo === "n" && sledece === "j") ||
                         (slovo === "d" && sledece === "ž") ||
@@ -37,7 +36,7 @@
 
     function convert(slovo, recnik) {
         return recnik[slovo] || slovo;
-    }    
+    }
 
     var _cir2lat = {
         "а": "a", "б": "b", "в": "v", "г": "g", "д": "d", "ђ": "đ", "е": "e", "ж": "ž", "з": "z", "и": "i",

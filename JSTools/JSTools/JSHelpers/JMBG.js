@@ -37,7 +37,7 @@ var JMBG = function (jmbg) {
         _godina = parseInt(_jmbg.substring(4, 7), 10);
         _region = _jmbg.substring(7, 9);
         _rbr = parseInt(_jmbg.substring(9, 12), 10);
-        _kontrolni = parseInt(_jmbg.substring(12, 13), 10);
+        _kontrolni = parseInt(_jmbg.charAt(12), 10);
 
         var tekuca_god = new Date().getFullYear() % 1000;
         var tekuci_mil = new Date().getFullYear() - tekuca_god;

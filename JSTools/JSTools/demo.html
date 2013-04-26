@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <title>JSTools</title>
     <link href="references/css/bootstrap.min.css" rel="stylesheet">
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
       <script src="references/js/html5shiv.js"></script>
     <![endif]-->
@@ -18,10 +17,10 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="brand" href="/">JSTools</a>
+                <a class="brand" href="index.html">JSTools</a>
                 <div class="nav-collapse collapse">
                     <ul class="nav">
-                        <li><a href="/">Home</a></li>
+                        <li><a href="index.html">Home</a></li>
                         <li class="active"><a href="demo.html">Demo</a></li>
                         <li><a href="testovi.html">Unit testovi</a></li>
                     </ul>
@@ -52,19 +51,32 @@
         <fieldset id="dataValidator_demo">
             <legend>dataValidator demo</legend>
             <p>
+                Tip validacije: 
                 <input type="radio" name="tip_validacije" id="rbPIB" value="PIB" checked="checked" />&nbsp;PIB&nbsp;&nbsp;&nbsp;
                 <input type="radio" name="tip_validacije" id="rbMB" value="MB" />&nbsp;MB firme&nbsp;&nbsp;&nbsp;
                 <input type="radio" name="tip_validacije" id="rbJBMG" value="JMBG" />&nbsp;JMBG&nbsp;&nbsp;&nbsp;
                 <input type="radio" name="tip_validacije" id="rbEmail" value="mail" />&nbsp;email&nbsp;&nbsp;&nbsp;
-                <input type="radio" name="tip_validacije" id="rbMod97" value="mod97" />&nbsp;kontrolni broj po modelu 97&nbsp;&nbsp;&nbsp;
+                <input type="radio" name="tip_validacije" id="rbMod97" value="mod97" />&nbsp;kontrolni broj po modelu 97
             </p>
             <div class="input-prepend input-append">
                 <span class="add-on">Unesite vrednost:</span>
-                <input class="span2" id="txtValidator" type="text" value="100000049" placeholder="Unesite vrednost..." >
+                <input class="span2" id="txtValidator" type="text" value="100000049" placeholder="Unesite vrednost..." style="width: 250px;" >
                 <button class="btn" type="button" id="btnValidiraj">Validiraj</button>
             </div>
             <pre id="validator_result">Rezultat...</pre>
             <pre id="validator_errors">Greške...</pre>
+            <hr />
+            <p>
+                Računanje kontrolnog broja po modelu:
+                <input type="radio" name="model" id="rb97" value="97" checked="checked" />&nbsp;97&nbsp;&nbsp;&nbsp;
+                <input type="radio" name="model" id="rb22" value="22" />&nbsp;22
+            </p>
+            <div class="input-prepend input-append">
+                <span class="add-on">Broj za računanje:</span>
+                <input class="span2" id="txtPB" type="text" value="1150000000000001" placeholder="Unesite broj..." style="width: 250px;" >
+                <button class="btn" type="button" id="btnRacunajMod">Računaj</button>
+            </div>
+            <pre id="kontrolni_broj_result">Rezultat...</pre>
         </fieldset>
     </div>
 
@@ -74,6 +86,7 @@
     <script src="references/js/jquery-1.9.1.min.js"></script>
     <script>
         $(document).ready(function () {
+            $('#validator_errors').hide();
             $('#btnJMBG').click(function () {
                 var input = $('#txtJMBG').val();
                 var jmbg = new JMBG(input);
@@ -82,7 +95,7 @@
                 $('#jmbg_result').append('<br />Datum rođenja: ' + jmbg.datumRodjenja());
                 $('#jmbg_result').append('<br />Region rođenja: ' + jmbg.region());
                 $('#jmbg_result').append('<br />Pol: ' + jmbg.pol());
-                $('#jmbg_result').append('<br />Redni broj rođenja (u regionu u danu): ' + jmbg.redniBrojRodjenja());
+                $('#jmbg_result').append('<br />Redni broj rođenja (datum/region/pol): ' + jmbg.redniBrojRodjenja());
 
             });
             $('#txtConvert').keyup(function (e) {
@@ -118,20 +131,21 @@
                         funkcija = dataValidator.prototype.validanMod97;
                         break;
                     default:
-                        break;
+                        return;
                 }
-                if (funkcija !== undefined) $('#validator_result').html('Validan: ' + funkcija(input, function (err) {
-                    $('#validator_errors').html("");
-                    for (var i = 0; i < err.length; i++)
-                        $('#validator_errors').append(err[i] + "<br />");
-                }));
-                else {
-                    $('#validator_result').html("Rezultat...");
-                    $('#validator_errors').html("Greške...");
+                $('#validator_result').html("Rezultat...");
+                $('#validator_errors').html("Greške...");
+                if (funkcija !== undefined) {
+                    $('#validator_result').html('Validan: ' + funkcija(input, function (err) {
+                        $('#validator_errors').html("");
+                        for (var i = 0; i < err.length; i++)
+                            $('#validator_errors').append(err[i] + "<br />");
+                    }));
                 }
             });
             $("input[name='tip_validacije']").change(function () {
                 var text = "";
+                $('#validator_errors').hide();
                 switch ($("input[name='tip_validacije']:checked").val()) {
                     case "PIB":
                         text = "100000049";
@@ -147,12 +161,31 @@
                         break;
                     case "mod97":
                         text = "61-115-0000000000001";
+                        $('#validator_errors').show();
                         break;
                     default:
-                        break;
+                        return;
                 }
                 $('#txtValidator').val(text);
                 $('#validator_result').html('Rezultat...');
+            });
+            $('#btnRacunajMod').click(function () {
+                var input = $('#txtPB').val();
+                if (input !== "") {
+                    var funkcija;
+                    switch ($("input[name='model']:checked").val()) {
+                        case "22":
+                            funkcija = dataValidator.prototype.kontrolniBrojMod22;
+                            break;
+                        case "97":
+                            funkcija = dataValidator.prototype.kontrolniBrojMod97;
+                            break;
+                        default:
+                            return;
+                    }
+                    $('#kontrolni_broj_result').html('Kontrolni broj je: ' + funkcija(input));
+                }
+                else $('#kontrolni_broj_result').html("Rezultat...");
             });
         });
     </script>
