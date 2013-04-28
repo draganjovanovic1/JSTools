@@ -70,10 +70,6 @@
     <Content Include="JSHelpers\dataValidator.min.js">
       <DependentUpon>dataValidator.js</DependentUpon>
     </Content>
-    <Content Include="JSHelpers\JMBG.js" />
-    <Content Include="JSHelpers\JMBG.min.js">
-      <DependentUpon>JMBG.js</DependentUpon>
-    </Content>
     <Content Include="references\css\bootstrap-responsive.css" />
     <Content Include="references\css\bootstrap-responsive.min.css" />
     <Content Include="references\css\bootstrap.css" />
@@ -98,9 +94,6 @@
     </Content>
     <Content Include="JSHelpers\dataValidator.min.js.map">
       <DependentUpon>dataValidator.js</DependentUpon>
-    </Content>
-    <Content Include="JSHelpers\JMBG.min.js.map">
-      <DependentUpon>JMBG.js</DependentUpon>
     </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

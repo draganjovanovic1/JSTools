@@ -1,5 +1,4 @@
 ﻿/// <reference path="../references/js/qunit.js" />
-/// <reference path="../JSHelpers/JMBG.js" />
 /// <reference path="../JSHelpers/dataValidator.js" />
 
 var valid_jmbg = "2507984770027";
