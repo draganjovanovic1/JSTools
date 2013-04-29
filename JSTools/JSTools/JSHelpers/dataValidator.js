@@ -28,7 +28,7 @@
     dataValidator.prototype.validanMB = function (mb) {
         return mb.length === 8 &&
             dataValidator.prototype.validanBroj(mb) &&
-            parseInt(mb.charAt(7), 10) === mod11mb(mb.substring(0, 7));
+            parseInt(mb.charAt(7), 10) === mod11(mb.substring(0, 7), function (kb) { return kb > 9 ? 0 : kb; });
     };
     dataValidator.prototype.validanJMBG = function (jmbg) {
         if (typeof jmbg !== "undefined" && jmbg !== null &&
@@ -38,7 +38,7 @@
             var godina = parseInt("2" + jmbg.substring(4, 7),10);
             if (dataValidator.prototype.validanDatum(new Date(godina, mesec, dan))) {
                 return /^60|66$/.test(jmbg.substring(7, 9)) ||
-                    parseInt(jmbg.charAt(12), 10) === mod11jmbg(jmbg.substring(0, 12))
+                    parseInt(jmbg.charAt(12), 10) === mod11(jmbg.substring(0, 12), function (kb) { return kb === 11 ? 0 : ((kb === 10) ? "X" : kb); });
             }
         }
         return false;
@@ -79,8 +79,11 @@
     dataValidator.prototype.kontrolniBrojMod22 = function (broj) {
         return (dataValidator.prototype.validanBroj(broj)) ? mod22(broj).toString() : null;
     };
-    dataValidator.prototype.kontrolniBrojMod11 = function (broj) {
-        return (dataValidator.prototype.validanBroj(broj)) ? mod11calc(broj).toString() : null;
+    dataValidator.prototype.kontrolniBrojMod11 = function (broj, dodatni_uslov) {
+        return (dataValidator.prototype.validanBroj(broj)) ? mod11(broj, dodatni_uslov).toString() : null;
+    };
+    dataValidator.prototype.kontrolniBrojMod11Sub = function (broj, dodatni_uslov) {
+        return (dataValidator.prototype.validanBroj(broj)) ? mod11sub(broj, dodatni_uslov).toString() : null;
     };
     function slovoUBroj(slovo) {
         return slovo === "-" ? "" : 
@@ -96,27 +99,26 @@
         return kb;
     }
     function mod22(br) {
-        var kb = mod11calc(br);
+        var kb = mod11sub(br);
         return kb > 9 ? kb -= 10 : kb;
     }
-    function mod11jmbg(br) {
-        var kb = mod11calc(br);
-        return kb === 11 ? 0 : ((kb === 10) ? "X" : kb);
-    }
-    function mod11mb(br) {
-        var kb = mod11calc(br, 2);
-        return kb > 9 ? 0 : kb;
-    }
-    function mod11calc(br, mnozilac) {
-        if (typeof mnozilac === "undefined")
-            mnozilac = 7;
+    function mod11(br, dodatni_uslov) {
         var kb = 0;
-        for (var i = 0; i < br.length; i++) {
+        for (var i = br.length - 1, mnozilac = 2; i >= 0; i--) {
+            kb += parseInt(br.charAt(i), 10) * mnozilac;
+            mnozilac = mnozilac === 7 ? 2 : mnozilac + 1;
+        }
+        kb = 11 - (kb % 11);
+        return (typeof dodatni_uslov === "undefined") ? kb : dodatni_uslov(kb);
+    }
+    function mod11sub(br, dodatni_uslov) {
+        var kb = 0;
+        for (var i = 0, mnozilac = 7; i < br.length; i++) {
             kb += parseInt(br.charAt(i), 10) * mnozilac;
             mnozilac = mnozilac === 2 ? 7 : mnozilac - 1;
         }
         kb = 11 - (kb % 11);
-        return kb;
+        return (typeof dodatni_uslov === "undefined") ? kb : dodatni_uslov(kb);
     }
     var _slova_za_kontrolni_broj = {
         "A": 10, "B": 11, "C": 12, "D": 13, "E": 14, "F": 15, "G": 16, "H": 17, "I": 18, "J": 19,

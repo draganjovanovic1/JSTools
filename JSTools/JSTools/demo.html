@@ -69,6 +69,8 @@
             <p>
                 Računanje kontrolnog broja po modelu:
                 <input type="radio" name="model" id="rb97" value="97" checked="checked" />&nbsp;97&nbsp;&nbsp;&nbsp;
+                <input type="radio" name="model" id="rb11" value="11" />&nbsp;11&nbsp;&nbsp;&nbsp;
+                <input type="radio" name="model" id="rb11SUB" value="11SUB" />&nbsp;11SUB&nbsp;&nbsp;&nbsp;
                 <input type="radio" name="model" id="rb22" value="22" />&nbsp;22
             </p>
             <div class="input-prepend input-append">
@@ -173,6 +175,12 @@
                 if (input !== "") {
                     var funkcija;
                     switch ($("input[name='model']:checked").val()) {
+                        case "11":
+                            funkcija = dataValidator.prototype.kontrolniBrojMod11;
+                            break;
+                        case "11SUB":
+                            funkcija = dataValidator.prototype.kontrolniBrojMod11Sub;
+                            break;
                         case "22":
                             funkcija = dataValidator.prototype.kontrolniBrojMod22;
                             break;
@@ -182,7 +190,7 @@
                         default:
                             return;
                     }
-                    $('#kontrolni_broj_result').html('Kontrolni broj je: ' + funkcija(input));
+                    $('#kontrolni_broj_result').html('Kontrolni broj je: ' + funkcija(input, function (kb) { return kb === 11 ? 0 : ((kb === 10) ? "X" : kb); }));
                 }
                 else $('#kontrolni_broj_result').html("Rezultat...");
             });
