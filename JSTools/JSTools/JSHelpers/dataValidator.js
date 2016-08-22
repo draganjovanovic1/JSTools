@@ -71,8 +71,8 @@
             else zakontrolu += vrednost.toString();
         }
         if (dataValidator.prototype.validanBroj(zakontrolu)) {
-            var rez = mod97(zakontrolu);
-            return rez.length === 1 ? rez = "0" + rez.toString() : rez.toString();
+            var rez = mod97(zakontrolu).toString();
+            return rez.length === 1 ? rez = "0" + rez : rez;
         }
         else return null;
     };
